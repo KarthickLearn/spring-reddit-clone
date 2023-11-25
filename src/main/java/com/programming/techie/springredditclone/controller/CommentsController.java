@@ -1,5 +1,6 @@
 package com.programming.techie.springredditclone.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.programming.techie.springredditclone.dto.CommentsDto;
 import com.programming.techie.springredditclone.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,6 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 public class CommentsController {
     private final CommentService commentService;
-
     @PostMapping
     public ResponseEntity<Void> createComment(@RequestBody CommentsDto commentsDto) {
         commentService.save(commentsDto);
@@ -24,6 +24,7 @@ public class CommentsController {
     }
 
     @GetMapping(params = "postId")
+    @JsonView(View.Base.class)
     public ResponseEntity<List<CommentsDto>> getAllCommentsForPost(@RequestParam Long postId) {
         return ResponseEntity.status(OK)
                 .body(commentService.getAllCommentsForPost(postId));
